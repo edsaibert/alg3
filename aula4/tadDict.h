@@ -23,6 +23,12 @@ void criaDic ( arvBusca* arv );
 /*  Entrada: raiz da árvore/subárvore; Saída: contagem de elementos */
 int contaItemDic ( arvBusca arv );
 
+/*  Entrada: raíz da arvore/subárvore. Saída: (null)    */
+void rotacaoEsq ( arvBusca arv );
+
+/*  Entrada: raíz da arvore/subárvore. Saída: (null)    */
+void rotacaoDir (arvBusca arv );
+
 /*  Entrada: item a ser inserido no nodo, ponteiro para a raíz da árvore/subárvore;
     Saída: 1 para sucesso, 0 para erro.
 */
