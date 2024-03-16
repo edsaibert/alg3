@@ -58,3 +58,6 @@ void escreveDic ( arvBusca arv );
     Saída: (void)
 */
 void visitaOrdenado ( arvBusca arv, void (*func)(itemArv) );
+
+/*  Entrada: raíz da árvore/subárvore. Saída: (void)    */
+void freeArv( arvBusca arv );

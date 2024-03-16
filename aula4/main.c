@@ -21,6 +21,7 @@ int main() {
     }
 
     escreveDic(raiz);
+    freeArv(raiz);
 
     return 0;
 }

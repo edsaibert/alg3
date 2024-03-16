@@ -63,3 +63,12 @@ void escreveDic( arvBusca arv ){
     write("\n");
     escreveDic(arv->esq);
 }
+
+void freeArv ( arvBusca arv ){
+    if (arv == NULL)
+        return;
+
+    freeArv( arv->esq );
+    freeArv( arv->dir );
+    free(arv);
+}
