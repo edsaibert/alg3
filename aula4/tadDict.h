@@ -35,9 +35,9 @@ void rotacaoDir (arvBusca arv );
 arvBusca insereDic ( itemArv item, arvBusca arv );
 
 /*  Entrada: item a ser procurado, sua chave, raíz da árvore/subárvore  
-    Saída: (void)
+    Saída: o nodo procurado, se existir. 
 */
-void buscaDic ( itemArv item, int chave, arvBusca arv);
+arvBusca buscaDic ( itemArv item, arvBusca arv);
 
 /*  Entrada: chave do nodo a ser removido, ponteiro para a raíz da árvore/subárvore 
     Saída: 1 para sucesso, 0 para erro  

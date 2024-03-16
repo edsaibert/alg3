@@ -32,6 +32,17 @@ int contaItemDic ( arvBusca arv ){
     return arv->chave;
 }
 
+arvBusca buscaDic( itemArv item, arvBusca arv){
+    if (eq(arv->item, item)){
+        return arv;
+    } else return NULL;
+
+    if (lt(arv->item, item))
+        buscaDic(item, arv->esq);
+    else
+        buscaDic(item, arv->dir);
+}
+
 arvBusca criaNodo( itemArv item ){
     arvBusca nodo;
 
