@@ -6,11 +6,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tadDict.h"
-
+#include "itemString.h"
 
 int main() {
     arvBusca raiz;
+    itemArv item;
 
+    criaDic(&raiz);
+
+    read(item);
+    while (!eq(item, "fim")){
+        raiz = insereDic(item, raiz);
+        read(item);
+    }
+
+    escreveDic(raiz);
 
     return 0;
 }

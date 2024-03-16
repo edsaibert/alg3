@@ -4,15 +4,17 @@
 */
 
 #include "tadDict.h"
+#include "itemString.h"
 #include <stdlib.h>
 #include <stdio.h>
+
 
 void criaDic ( arvBusca* arv ){
     arv = NULL;
 }
 
-int criaNodo( itemArv item, arvBusca* arv ) {
-
+int arvVazia ( arvBusca arv ){
+    return (arv == NULL);
 }
 
 void rotacaoEsq ( arvBusca arv ){
@@ -23,24 +25,40 @@ void rotacaoDir ( arvBusca arv ){
     arvBusca aux = arv; arv = arv->esq; arv->dir = aux;
 }
 
-int insereDic ( itemArv item, arvBusca* arv ){
-    //apBin nodo;
-    //if (!criaNodo(item, &nodo))
-    //    return 0;
-    if ( arv == NULL ){
-        return 0;
+arvBusca criaNodo( itemArv item ){
+    arvBusca nodo;
+
+    nodo = (arvBusca) malloc(sizeof(arvBin));
+
+    cp(nodo->item, item);    
+    nodo->chave = 1;
+    nodo->esq = NULL;
+    nodo->dir = NULL;
+
+    return nodo;
+}
+
+arvBusca insereDic ( itemArv item, arvBusca arv ){
+
+    if (arvVazia(arv)){
+        return criaNodo(item);
     }
 
-    // nao sei onde colocar o criaNodo (é no retorno)
+    if (lt(arv->item, item)) 
+        arv->esq = insereDic(item, arv->esq);
+    else
+        arv->dir = insereDic(item, arv->dir);
 
-    if (item < (*arv)->item){
-        insereDic(item, (*arv)->esq);
-        rotacaoDir(arv);
+    return arv;
+}
+
+void escreveDic( arvBusca arv ){
+    if ( arvVazia(arv) ){
+        return;
     }
-    else {
-        insereDic(item, (*arv)->dir);
-        rotacaoEsq(arv);
-    }
-    
-    return 1;
+
+    escreveDic(arv->dir);
+    write(arv->item);
+    write("\n");
+    escreveDic(arv->esq);
 }

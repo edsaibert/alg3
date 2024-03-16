@@ -30,9 +30,9 @@ void rotacaoEsq ( arvBusca arv );
 void rotacaoDir (arvBusca arv );
 
 /*  Entrada: item a ser inserido no nodo, ponteiro para a raíz da árvore/subárvore;
-    Saída: 1 para sucesso, 0 para erro.
+    Saída: nova árvore
 */
-int insereDic ( itemArv item, arvBusca* arv );
+arvBusca insereDic ( itemArv item, arvBusca arv );
 
 /*  Entrada: item a ser procurado, sua chave, raíz da árvore/subárvore  
     Saída: (void)
@@ -48,6 +48,11 @@ int removeDic ( int chave, arvBusca* arv );
     Saída: chave do elemento encontrado, se encontrado
 */
 int buscaElemK ( int k, arvBusca arv );
+
+/*  Entrada: árvore/subárvore
+    Saída: escrita da árvore
+*/
+void escreveDic ( arvBusca arv );
 
 /*  Entrada: raíz da árvore/subárvore, função para ser aplicada a todos os nodos da árvore
     Saída: (void)
