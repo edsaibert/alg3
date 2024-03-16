@@ -21,6 +21,7 @@ int main() {
     }
 
     escreveDic(raiz);
+    printf("Contagem de nodos: %d\n", contaItemDic(raiz));
     freeArv(raiz);
 
     return 0;

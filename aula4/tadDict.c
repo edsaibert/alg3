@@ -25,6 +25,13 @@ void rotacaoDir ( arvBusca arv ){
     arvBusca aux = arv; arv = arv->esq; arv->dir = aux;
 }
 
+int contaItemDic ( arvBusca arv ){
+    if (arvVazia(arv))
+        return 0;
+    
+    return arv->chave;
+}
+
 arvBusca criaNodo( itemArv item ){
     arvBusca nodo;
 
