@@ -43,6 +43,7 @@ arvBusca insereDic ( itemArv item, arvBusca arv ){
     if (arvVazia(arv)){
         return criaNodo(item);
     }
+    arv->chave++;
 
     if (lt(arv->item, item)) 
         arv->esq = insereDic(item, arv->esq);
