@@ -11,5 +11,6 @@
 int main() {
     arvBusca raiz;
 
+
     return 0;
 }
