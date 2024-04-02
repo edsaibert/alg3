@@ -55,27 +55,69 @@ ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
     return arv;
   }
 
-  paiMaior(arv->esq);
-  paiMaior(arv->dir);
+  paiMaior(arv->esq, func);
+  paiMaior(arv->dir, func);
 
   int max = valorMinMax(arv, func);
   arv->item = max;
 
 };
 
+ArvBin* buscaMaior( ArvBin arv, int max ){};
+
 /*  Alterar os valores das chaves dos nodos de forma que a maior chave da arvore fique na raiz. A arvore deve
     manter as chaves originais, fazendo a troca do valor de um nodo com um dos seus filhos caso seu valor nao
     seja o maior  
 */
-ArvBin maiorNaRaiz( ArvBin arv ){};
+ArvBin maiorNaRaiz( ArvBin arv, int max ){}
 
 /*  funcao que altera uma arvore de forma que cada nodo
     contém o maior valor dentre os seus filhos (mantendo todas as chaves originais da arvore)
 */
 ArvBin ordenaPeloMaior( ArvBin arv ){};
 
+/*  Cria novo nodo  */
+ArvBin novoNodo( ItemArv item, int chave ){
+  ArvBin nodo = (ArvBin) malloc(sizeof(Nodo));
+
+  if (nodo == NULL){
+    printf("Erro de alocacao de memoria\n");
+    return NULL;
+  }
+
+  nodo->item = chave;
+  nodo->esq = NULL;
+  nodo->dir = NULL;
+
+  return nodo;
+};
+
 /*  Dobra a quantidade de nodos da arvore criando para cada um novo pai */
-ArvBin dobraArvore( ArvBin arv ){};
+ArvBin dobraArvore( ArvBin arv ){
+  if (arv == NULL){
+    return arv;
+  }
+
+  ArvBin aux;
+  if (arv->item % 2 == 0){
+    aux = novoNodo(arv->item, (arv->item)+1);
+    aux->esq = arv;
+  }
+  else {
+    aux = novoNodo(arv->item, (arv->item)-1);
+    aux->dir = arv;
+  }
+
+  if (arv->esq != NULL){
+    arv->esq = dobraArvore(arv->esq);
+  }
+  if (arv->dir != NULL){
+    arv->dir = dobraArvore(arv->dir);
+  }
+
+  return aux;
+
+};
 
 
 /* ----------------------------------------------------- */
@@ -99,19 +141,19 @@ int main(int argc, char *argv[]){
   printf("Soma das Chaves: %d\n", somaChave(arv));
   printf("Valor mínimo: %d\n", valorMinMax(arv, min));
 
-  printf("Nodo pai com maior chave: \n");
-  arv = paiMaior(arv, max);
+  // printf("Nodo pai com maior chave: \n");
+  // arv = paiMaior(arv, max);
+  // escreveArv( arv );
+
+  arv = maiorNaRaiz(arv, valorMinMax(arv, max));
   escreveArv( arv );
+
+  // arv = dobraArvore( arv );
+  // escreveArv( arv );
+
+  // arv = ordenaPeloMaior(arv);
+  // escreveArv( arv );
 /*
-
-  ... maiorNaRaiz(...)
-  escreveArv( raiz );
-
-  ... ordenaPeloMaior(...)
-  escreveArv( raiz );
-
-  ... dobraArvore(...)
-  escreveArv( raiz );
   --------------------------------------------- */
   free( arv );
   return 0;
