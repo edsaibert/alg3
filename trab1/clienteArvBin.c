@@ -63,13 +63,59 @@ ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
 
 };
 
-ArvBin* buscaMaior( ArvBin arv, int max ){};
+ArvBin removeMaior( ArvBin arv, int max ){
+  if (arv == NULL)
+    return NULL;
+
+  if (arv->item == max){
+    return arv;
+  }
+
+  ArvBin maior = removeMaior(arv->esq, max);
+  if (maior != NULL){
+    if (maior->esq && maior->dir){
+      ArvBin temp = maior->esq;
+    
+      maior = maior->dir;
+      while (maior->esq != NULL){
+        maior = maior->esq;
+      }
+      maior->esq = temp;
+    }
+    else if (maior->esq){
+      maior = maior->dir;
+    }
+    else if (maior->dir){
+      maior = maior->esq;
+    }
+    return maior;
+
+  } else
+  maior = removeMaior(arv->dir, max);
+
+};
 
 /*  Alterar os valores das chaves dos nodos de forma que a maior chave da arvore fique na raiz. A arvore deve
     manter as chaves originais, fazendo a troca do valor de um nodo com um dos seus filhos caso seu valor nao
     seja o maior  
 */
-ArvBin maiorNaRaiz( ArvBin arv, int max ){}
+ArvBin maiorNaRaiz( ArvBin arv, int max ){
+  if (arv == NULL || arv->item == max)
+    return arv;
+  
+  ArvBin maior = removeMaior(arv, max);
+  if (maior != NULL){
+
+    maior->dir = arv->dir;
+    arv->dir = NULL;
+    maior->esq = arv;
+
+    return maior;
+  }
+
+  return arv;
+
+}
 
 /*  funcao que altera uma arvore de forma que cada nodo
     contém o maior valor dentre os seus filhos (mantendo todas as chaves originais da arvore)
