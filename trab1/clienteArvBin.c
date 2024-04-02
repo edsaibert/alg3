@@ -12,22 +12,56 @@ typedef int ItemArv;
 /* ----------------------------------------------------- */
 /* Funções */
 
+/*  Função que retorna o menor valor entre dois inteiros */
+int min(int a, int b){
+  return (a < b ? a : b);
+}
+
+/*  Função que retorna o maior valor entre dois inteiros */
+int max(int a, int b){
+  return (a > b ? a : b);
+}
+
 /*  Calcula a soma de todas as chaves da arvore */
 int somaChave ( ArvBin arv ){
-  if (arv == NULL)
+  if (arv == NULL){
     return 0;
+  }
   
   return (arv->item + somaChave(arv->esq) + somaChave(arv->dir));
 
 };
 
-/*  Calcula o valor mınimo das chaves armazenadas na arvore. Caso a arvore esteja vazia o valor retornado
+/*  Calcula o valor mınimo/maximo das chaves armazenadas na arvore. Caso a arvore esteja vazia o valor retornado
     deve ser zero 
 */
-int valorMinimo( ArvBin arv ){};
+int valorMinMax( ArvBin arv, int (* func)(int a, int b) ){
+  if (arv == NULL){
+    return 0;
+  }
+
+  if (arv->esq == NULL && arv->dir == NULL){
+    return arv->item;
+  } 
+
+  return func(arv->item, func(valorMinMax(arv->esq, func), valorMinMax(arv->dir, func)));
+};
+
+
 
 /*  Altera a arvore de forma que na arvore final a chave do nodo pai e igual a chave do seu maior filho */
-ArvBin paiMaior( ArvBin arv ){};
+ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
+  if (arv == NULL){
+    return arv;
+  }
+
+  paiMaior(arv->esq);
+  paiMaior(arv->dir);
+
+  int max = valorMinMax(arv, func);
+  arv->item = max;
+
+};
 
 /*  Alterar os valores das chaves dos nodos de forma que a maior chave da arvore fique na raiz. A arvore deve
     manter as chaves originais, fazendo a troca do valor de um nodo com um dos seus filhos caso seu valor nao
@@ -62,12 +96,13 @@ int main(int argc, char *argv[]){
   escreveArv( arv );
 
 /*----   chamada das funcoes da lista ----*/
-  printf("%d\n", somaChave(arv));
-/*
-  printf("%d\n" valorMinimo(...) );
+  printf("Soma das Chaves: %d\n", somaChave(arv));
+  printf("Valor mínimo: %d\n", valorMinMax(arv, min));
 
-  ... paiMaior(...)
+  printf("Nodo pai com maior chave: \n");
+  arv = paiMaior(arv, max);
   escreveArv( arv );
+/*
 
   ... maiorNaRaiz(...)
   escreveArv( raiz );
