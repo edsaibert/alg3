@@ -63,7 +63,8 @@ ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
 
 };
 
-ArvBin removeMaior( ArvBin arv, int max ){
+/*	Busca nodo na árvore com a maior chave e troca seu item pelo valor fornecido */
+ArvBin trocaMaior( ArvBin arv, int max, ItemArv chave ){
   if (arv == NULL)
     return NULL;
 
@@ -71,47 +72,44 @@ ArvBin removeMaior( ArvBin arv, int max ){
     return arv;
   }
 
-  ArvBin maior = removeMaior(arv->esq, max);
-  if (maior != NULL){
-    if (maior->esq && maior->dir){
-      ArvBin temp = maior->esq;
-    
-      maior = maior->dir;
-      while (maior->esq != NULL){
-        maior = maior->esq;
-      }
-      maior->esq = temp;
-    }
-    else if (maior->esq){
-      maior = maior->dir;
-    }
-    else if (maior->dir){
-      maior = maior->esq;
-    }
-    return maior;
+	ArvBin maior = trocaMaior(arv->esq, max, chave);
+	if (!maior)
+		maior = trocaMaior(arv->dir, max, chave);
+	else
+		maior->item = chave;
 
-  } else
-  maior = removeMaior(arv->dir, max);
-
+	return maior;
 };
 
 /*  Alterar os valores das chaves dos nodos de forma que a maior chave da arvore fique na raiz. A arvore deve
     manter as chaves originais, fazendo a troca do valor de um nodo com um dos seus filhos caso seu valor nao
     seja o maior  
 */
-ArvBin maiorNaRaiz( ArvBin arv, int max ){
-  if (arv == NULL || arv->item == max)
+ArvBin maiorNaRaiz( ArvBin arv ){
+  int max, temp;
+  ArvBin maior;
+
+  if (arv == NULL || (arv->esq == NULL && arv->dir == NULL))
     return arv;
-  
-  ArvBin maior = removeMaior(arv, max);
-  if (maior != NULL){
 
-    maior->dir = arv->dir;
-    arv->dir = NULL;
-    maior->esq = arv;
+  arv->esq = maiorNaRaiz(arv->esq);
+  arv->dir = maiorNaRaiz(arv->dir);
 
-    return maior;
+  temp = arv->item;
+  if (arv->esq > arv->dir){
+	  max = arv->esq->item;
+	  arv->item = arv->esq->item;
+	  arv->esq->item = temp;
   }
+  else {
+	  max = arv->dir->item; 
+	  arv->item = arv->dir->item;
+	  arv->dir->item = temp;
+  }
+
+  //maior = trocaMaior(arv, max, arv);
+  //if (!maior)
+  //	  return arv;
 
   return arv;
 
@@ -191,7 +189,7 @@ int main(int argc, char *argv[]){
   // arv = paiMaior(arv, max);
   // escreveArv( arv );
 
-  arv = maiorNaRaiz(arv, valorMinMax(arv, max));
+  arv = maiorNaRaiz(arv);
   escreveArv( arv );
 
   // arv = dobraArvore( arv );
