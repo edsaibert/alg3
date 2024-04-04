@@ -48,7 +48,6 @@ int valorMinMax( ArvBin arv, int (* func)(int a, int b) ){
 };
 
 
-
 /*  Altera a arvore de forma que na arvore final a chave do nodo pai e igual a chave do seu maior filho */
 ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
   if (arv == NULL){
@@ -63,62 +62,68 @@ ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
 
 };
 
-/*	Busca nodo na árvore com a maior chave e troca seu item pelo valor fornecido */
-ArvBin trocaMaior( ArvBin arv, int max, ItemArv chave ){
-  if (arv == NULL)
-    return NULL;
-
-  if (arv->item == max){
-    return arv;
-  }
-
-	ArvBin maior = trocaMaior(arv->esq, max, chave);
-	if (!maior)
-		maior = trocaMaior(arv->dir, max, chave);
-	else
-		maior->item = chave;
-
-	return maior;
-};
-
 /*  Alterar os valores das chaves dos nodos de forma que a maior chave da arvore fique na raiz. A arvore deve
     manter as chaves originais, fazendo a troca do valor de um nodo com um dos seus filhos caso seu valor nao
     seja o maior  
 */
 ArvBin maiorNaRaiz( ArvBin arv ){
-  int max, temp;
-  ArvBin maior;
+  int temp, max;
+  ArvBin maiorNodo;
 
-  if (arv == NULL || (arv->esq == NULL && arv->dir == NULL))
+  if (arv == NULL)
     return arv;
 
   arv->esq = maiorNaRaiz(arv->esq);
   arv->dir = maiorNaRaiz(arv->dir);
 
-  temp = arv->item;
-  if (arv->esq > arv->dir){
-	  max = arv->esq->item;
-	  arv->item = arv->esq->item;
-	  arv->esq->item = temp;
-  }
-  else {
-	  max = arv->dir->item; 
-	  arv->item = arv->dir->item;
-	  arv->dir->item = temp;
+  max = arv->item;
+  maiorNodo = arv;
+
+  if (arv->esq != NULL && arv->esq->item > max) {
+    max = arv->esq->item;
+    maiorNodo = arv->esq;
   }
 
-  //maior = trocaMaior(arv, max, arv);
-  //if (!maior)
-  //	  return arv;
+  if (arv->dir != NULL && arv->dir->item > max) {
+    max = arv->dir->item;
+    maiorNodo = arv->dir;
+  }
+
+  if (maiorNodo != arv) {
+    int temp = arv->item;
+    arv->item = maiorNodo->item;
+    maiorNodo->item = temp;
+  }
 
   return arv;
-
 }
 
 /*  funcao que altera uma arvore de forma que cada nodo
     contém o maior valor dentre os seus filhos (mantendo todas as chaves originais da arvore)
 */
-ArvBin ordenaPeloMaior( ArvBin arv ){};
+ArvBin ordenaPeloMaior( ArvBin arv ){
+  int max, temp;
+  ArvBin maiorNodo;
+
+  if (arv == NULL){
+    return arv;
+  }
+
+  arv = maiorNaRaiz(arv);
+  if (arv->esq != NULL && arv->dir != NULL){
+
+    if (arv->esq->item < arv->dir->item){
+      temp = arv->esq->item;
+      arv->esq->item = arv->dir->item;
+      arv->dir->item = temp;
+    }
+  }
+
+  arv->esq = ordenaPeloMaior(arv->esq);
+  arv->dir = ordenaPeloMaior(arv->dir);
+
+  return arv;
+};
 
 /*  Cria novo nodo  */
 ArvBin novoNodo( ItemArv item, int chave ){
@@ -189,8 +194,8 @@ int main(int argc, char *argv[]){
   // arv = paiMaior(arv, max);
   // escreveArv( arv );
 
-  arv = maiorNaRaiz(arv);
-  escreveArv( arv );
+  // arv = maiorNaRaiz(arv);
+  // escreveArv( arv );
 
   // arv = dobraArvore( arv );
   // escreveArv( arv );
