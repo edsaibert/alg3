@@ -63,13 +63,57 @@ ArvBin paiMaior( ArvBin arv, int (* func)(int a, int b )){
 
 };
 
-ArvBin* buscaMaior( ArvBin arv, int max ){};
+/*	Busca nodo na árvore com a maior chave e troca seu item pelo valor fornecido */
+ArvBin trocaMaior( ArvBin arv, int max, ItemArv chave ){
+  if (arv == NULL)
+    return NULL;
+
+  if (arv->item == max){
+    return arv;
+  }
+
+	ArvBin maior = trocaMaior(arv->esq, max, chave);
+	if (!maior)
+		maior = trocaMaior(arv->dir, max, chave);
+	else
+		maior->item = chave;
+
+	return maior;
+};
 
 /*  Alterar os valores das chaves dos nodos de forma que a maior chave da arvore fique na raiz. A arvore deve
     manter as chaves originais, fazendo a troca do valor de um nodo com um dos seus filhos caso seu valor nao
     seja o maior  
 */
-ArvBin maiorNaRaiz( ArvBin arv, int max ){}
+ArvBin maiorNaRaiz( ArvBin arv ){
+  int max, temp;
+  ArvBin maior;
+
+  if (arv == NULL || (arv->esq == NULL && arv->dir == NULL))
+    return arv;
+
+  arv->esq = maiorNaRaiz(arv->esq);
+  arv->dir = maiorNaRaiz(arv->dir);
+
+  temp = arv->item;
+  if (arv->esq > arv->dir){
+	  max = arv->esq->item;
+	  arv->item = arv->esq->item;
+	  arv->esq->item = temp;
+  }
+  else {
+	  max = arv->dir->item; 
+	  arv->item = arv->dir->item;
+	  arv->dir->item = temp;
+  }
+
+  //maior = trocaMaior(arv, max, arv);
+  //if (!maior)
+  //	  return arv;
+
+  return arv;
+
+}
 
 /*  funcao que altera uma arvore de forma que cada nodo
     contém o maior valor dentre os seus filhos (mantendo todas as chaves originais da arvore)
@@ -145,7 +189,7 @@ int main(int argc, char *argv[]){
   // arv = paiMaior(arv, max);
   // escreveArv( arv );
 
-  arv = maiorNaRaiz(arv, valorMinMax(arv, max));
+  arv = maiorNaRaiz(arv);
   escreveArv( arv );
 
   // arv = dobraArvore( arv );
