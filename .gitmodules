@@ -1,0 +1,3 @@
+[submodule "trab2"]
+	path = trab2
+	url = git@gitlab.c3sl.ufpr.br:es23/t2-alg3.git
